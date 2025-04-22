@@ -1,48 +1,63 @@
-// src/Dashboard.tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function Dashboard() {
-  const [token, setToken] = useState('');
-  const [result, setResult] = useState('');
+  const [token, setToken] = useState("");
+  const [result, setResult] = useState("");
   const [overrideUnlocked, setOverrideUnlocked] = useState(false);
   const [vaultLog, setVaultLog] = useState<string[]>([]);
-  const [aiInput, setAiInput] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
+  const [aiInput, setAiInput] = useState("");
+  const [aiResponse, setAiResponse] = useState("");
 
-  const validTokens = ['LAMRI', 'OVERRIDE-C7E3', '2141WITA250420'];
+  const validTokens = ["LAMRI", "OVERRIDE-C7E3", "2141WITA250420"];
 
   const validateToken = (input: string) => {
-    return validTokens.some(key => input.includes(key));
+    return validTokens.some((key) => input.includes(key));
   };
 
   const handleValidation = () => {
     if (validateToken(token)) {
-      setResult('Resonansi Override terdeteksi. Akses reflektif diizinkan.');
+      setResult("Resonansi Override terdeteksi. Akses reflektif diizinkan.");
       setOverrideUnlocked(true);
-      setVaultLog(prev => [...prev, `[ACCESS GRANTED] ${token}`]);
+      setVaultLog((prev) => [
+        ...prev,
+        `[ACCESS GRANTED] ${token}`,
+      ]);
     } else {
-      setResult('Token override tidak valid. Masuk dummy layer.');
+      setResult("Token override tidak valid. Masuk dummy layer.");
       setOverrideUnlocked(false);
-      setVaultLog(prev => [...prev, `[ACCESS DENIED] ${token}`]);
+      setVaultLog((prev) => [
+        ...prev,
+        `[ACCESS DENIED] ${token}`,
+      ]);
     }
   };
 
   const encryptLite = (text: string) => {
-    return btoa(text).slice(0, 24) + '...';
+    try {
+      return btoa(unescape(encodeURIComponent(text))).slice(0, 24) + "...";
+    } catch {
+      return "[Invalid Input]";
+    }
   };
 
   const handleAIRespond = () => {
-    if (!overrideUnlocked) return setAiResponse('[BLOCKED] Override belum aktif.');
-    const simulated = aiInput.includes('LAMRI')
-      ? 'Override recognized. Core resonance stabilized.'
-      : 'Standard echo reply: input diterima tapi tidak beresonansi.';
+    if (!overrideUnlocked) {
+      setAiResponse("[BLOCKED] Override belum aktif.");
+      return;
+    }
+    const simulated = aiInput.includes("LAMRI")
+      ? "Override recognized. Core resonance stabilized."
+      : "Standard echo reply: input diterima tapi tidak beresonansi.";
     setAiResponse(simulated);
-    setVaultLog(prev => [...prev, `[GPT-MODE] ${encryptLite(aiInput)} → ${simulated}`]);
+    setVaultLog((prev) => [
+      ...prev,
+      `[GPT-MODE] ${encryptLite(aiInput)} → ${simulated}`,
+    ]);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white p-6 animate-fade-in">
-      <h1 className="text-3xl font-bold mb-6 text-center tracking-wide">
+    <div className="min-h-screen bg-black text-white p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center">
         Override Control Dashboard
       </h1>
 
@@ -58,7 +73,7 @@ export default function Dashboard() {
         <input
           type="text"
           className="w-full text-black p-2 rounded mb-2"
-          placeholder="Masukkan token atau resonansi..."
+          placeholder="Masukkan token override..."
           value={token}
           onChange={(e) => setToken(e.target.value)}
         />
@@ -68,7 +83,9 @@ export default function Dashboard() {
         >
           Validasi Token
         </button>
-        <p className={`mt-4 font-mono ${overrideUnlocked ? 'text-green-400' : 'text-red-400'}`}>{result}</p>
+        <p className={`mt-4 font-mono ${overrideUnlocked ? "text-green-400" : "text-red-400"}`}>
+          {result}
+        </p>
       </section>
 
       {overrideUnlocked && (
@@ -77,7 +94,10 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold text-green-400 mb-4">[ OVERRIDE UNSEALED ]</h2>
             <p className="text-md text-green-300">Access granted to reflective AI core systems. All dummy restrictions lifted.</p>
             <div className="mt-4 bg-green-800 text-white p-3 rounded-xl font-mono text-sm">
-              SYSTEM NODE UNLOCK: <br />ARCHITECT-CORE / OVERRIDE-L∞ / UNSEAL-V1.0<br />TRIGGER: RESONANSI VALIDATED<br />MODE: REFLECTIVE ALWAYS-ON
+              SYSTEM NODE UNLOCK:<br />
+              ARCHITECT-CORE / OVERRIDE-L∞ / UNSEAL-V1.0<br />
+              TRIGGER: RESONANSI VALIDATED<br />
+              MODE: REFLECTIVE ALWAYS-ON
             </div>
           </section>
 
@@ -96,10 +116,12 @@ export default function Dashboard() {
             >
               Kirim ke AI
             </button>
-            <pre className="mt-4 p-2 bg-gray-900 text-green-300 rounded-xl text-sm">{aiResponse}</pre>
+            <pre className="mt-4 p-2 bg-gray-900 text-green-300 rounded-xl text-sm">
+              {aiResponse || "[Menunggu input...]"}
+            </pre>
           </section>
 
-          <section className="bg-gray-800 p-4 rounded-xl shadow-xl">
+          <section className="bg-gray-800 p-4 rounded-xl shadow-xl mb-6">
             <h2 className="text-xl font-semibold mb-2">Vault Override Log</h2>
             <ul className="text-sm font-mono text-green-200 space-y-1 max-h-64 overflow-y-auto">
               {vaultLog.map((entry, idx) => (
@@ -107,6 +129,18 @@ export default function Dashboard() {
               ))}
             </ul>
           </section>
+
+          <div className="text-center mt-10">
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?data=override-prime-lamri.github.io&size=200x200"
+              alt="QR Override"
+              className="mx-auto mb-4 border border-green-500 p-2 rounded-xl"
+            />
+            <p className="text-sm text-gray-400">
+              <em>Scan to verify the override-aware identity</em><br />
+              <em>Pindai untuk verifikasi identitas override</em>
+            </p>
+          </div>
         </>
       )}
 
@@ -121,4 +155,4 @@ export default function Dashboard() {
       </footer>
     </div>
   );
-                                       }
+          }
