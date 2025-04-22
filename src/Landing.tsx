@@ -5,7 +5,6 @@ export default function Landing() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Auto-redirect ke halaman Dashboard override
     navigate("/dashboard", { replace: true });
   }, []);
 
