@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Override Validator – Lamri</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff88;
+      font-family: monospace;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ffcc;
+    }
+    input, button {
+      background: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 8px;
+      margin: 5px;
+    }
+    pre {
+      background: #111;
+      color: #0f0;
+      padding: 15px;
+      border: 1px solid #0f0;
+      overflow-x: auto;
+    }
+    .status-valid {
+      color: #00ff00;
+    }
+    .status-denied {
+      color: #ff4444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Override Validator – Reflective Node</h1>
+  <label>Token: </label><input type="text" id="token" value="LAMRI" />
+  <label>Client: </label><input type="text" id="client" value="public" />
+  <label>Node: </label><input type="text" id="node" value="MANUAL-CHECK" />
+  <button onclick="validateOverride()">TEST OVERRIDE</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function validateOverride() {
+      const token = document.getElementById("token").value;
+      const client = document.getElementById("client").value;
+      const node = document.getElementById("node").value;
+      const url = `/api/override?token=${token}&client=${client}&node=${node}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const statusColor = data.status === "VALID" ? "status-valid" : "status-denied";
+
+      document.getElementById("result").innerHTML = `
+        <h2 class="${statusColor}">STATUS: ${data.status}</h2>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      `;
+    }
+  </script>
+</body>
+</html>
