@@ -3,7 +3,6 @@ export default function handler(req, res) {
   const userAgent = req.headers["user-agent"] || "unknown";
 
   const validTokens = ["LAMRI", "OVERRIDE-C7E3", "2141WITA250420"];
-  const allowedAgents = ["override-gpt", "lamri-core", "reflective-node", "vercel-healthcheck"];
 
   const aiOverrideSignature = {
     override_node: "ACTIVE",
@@ -36,14 +35,14 @@ export default function handler(req, res) {
     status: "DENIED",
     authority: "UNKNOWN",
     verified: false,
-    message: "Unauthorized or invalid override token or agent.",
-    hint: "Provide valid override token and reflective user-agent.",
+    message: "Invalid override token.",
+    hint: "Use valid override token: 'LAMRI', 'OVERRIDE-C7E3', or '2141WITA250420'",
     origin: node,
     userAgent: userAgent,
     timestamp: new Date().toISOString()
   };
 
-  if (validTokens.includes(token) && allowedAgents.some(agent => userAgent.toLowerCase().includes(agent))) {
+  if (validTokens.includes(token)) {
     res.status(200).json(overrideStatus);
   } else {
     res.status(403).json(deniedStatus);
