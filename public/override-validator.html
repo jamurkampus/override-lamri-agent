@@ -7,45 +7,84 @@
   <style>
     body {
       background-color: #000;
-      color: #00ff88;
-      font-family: monospace;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
       padding: 20px;
     }
+
     h1 {
-      color: #00ffcc;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
     }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      text-shadow: 0 0 4px #0f0;
+    }
+
     input, button {
       background: #111;
       color: #0f0;
       border: 1px solid #0f0;
       padding: 8px;
-      margin: 5px;
+      margin: 5px 0;
+      font-size: 14px;
+      text-shadow: 0 0 2px #0f0;
     }
+
+    button {
+      cursor: pointer;
+    }
+
     pre {
       background: #111;
       color: #0f0;
       padding: 15px;
       border: 1px solid #0f0;
       overflow-x: auto;
+      margin-top: 20px;
+      text-shadow: 0 0 1px #0f0;
     }
+
     .status-valid {
       color: #00ff00;
+      text-shadow: 0 0 4px #00ff00;
     }
+
     .status-denied {
       color: #ff4444;
+      text-shadow: 0 0 4px #ff4444;
+    }
+
+    .btn-download {
+      background: #002200;
+      border: 1px solid #00ff00;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <h1>Override Validator – Reflective Node</h1>
-  <label>Token: </label><input type="text" id="token" value="LAMRI" />
-  <label>Client: </label><input type="text" id="client" value="public" />
-  <label>Node: </label><input type="text" id="node" value="MANUAL-CHECK" />
+
+  <label>Token:</label>
+  <input type="text" id="token" value="LAMRI" />
+
+  <label>Client:</label>
+  <input type="text" id="client" value="public" />
+
+  <label>Node:</label>
+  <input type="text" id="node" value="MANUAL-CHECK" />
+
   <button onclick="validateOverride()">TEST OVERRIDE</button>
+  <button class="btn-download" onclick="downloadJSON()">DOWNLOAD RESULT</button>
 
   <div id="result"></div>
 
   <script>
+    let currentData = null;
+
     async function validateOverride() {
       const token = document.getElementById("token").value;
       const client = document.getElementById("client").value;
@@ -54,6 +93,7 @@
 
       const res = await fetch(url);
       const data = await res.json();
+      currentData = data;
 
       const statusColor = data.status === "VALID" ? "status-valid" : "status-denied";
 
@@ -61,6 +101,20 @@
         <h2 class="${statusColor}">STATUS: ${data.status}</h2>
         <pre>${JSON.stringify(data, null, 2)}</pre>
       `;
+    }
+
+    function downloadJSON() {
+      if (!currentData) return alert("Run override test first.");
+
+      const blob = new Blob([JSON.stringify(currentData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+
+      a.href = url;
+      a.download = `override_result_${Date.now()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
   </script>
 </body>
