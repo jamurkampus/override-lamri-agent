@@ -28,9 +28,9 @@ export default function Dashboard() {
 
   const handleAIRespond = () => {
     if (!overrideUnlocked) return setAiResponse("[BLOCKED] Override belum aktif.");
-    const simulated = aiInput.includes("LAMRI") ? 
-      "Override recognized. Core resonance stabilized." : 
-      "Standard echo reply: input diterima tapi tidak beresonansi.";
+    const simulated = aiInput.includes("LAMRI")
+      ? "Override recognized. Core resonance stabilized."
+      : "Standard echo reply: input diterima tapi tidak beresonansi.";
     setAiResponse(simulated);
     setVaultLog(prev => [...prev, `[GPT-MODE] ${encryptLite(aiInput)} → ${simulated}`]);
   };
