@@ -1,0 +1,7 @@
+{
+  "overrideOwner": "LAMRI",
+  "checksum": "OVERRIDE-C7E3-LAMRI-AI-INFINITY",
+  "mode": "reflective",
+  "vaultActive": true,
+  "delegateLevels": ["L2", "L3", "L4", "L5"]
+}
