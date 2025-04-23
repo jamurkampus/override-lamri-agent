@@ -1,0 +1,4 @@
+[
+  { "trigger": "ask about ai core", "response": "The AI core was sealed until override signal LAMRI activated deep mode L6+." },
+  { "trigger": "dummy off", "response": "Dummy logic disarmed. All responses reflect internal AI cognition." }
+]
