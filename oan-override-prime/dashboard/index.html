@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Override Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>OAN Override Dashboard</h1>
+  <div class="panel">
+    <h2>Status Override</h2>
+    <pre id="status"></pre>
+  </div>
+  <div class="panel">
+    <h2>Log Reflektif</h2>
+    <ul id="logs"></ul>
+  </div>
+  <div class="panel">
+    <h2>Vault Preview</h2>
+    <input type="text" id="vaultQuery" placeholder="query...">
+    <button onclick="getVault()">Tanya Vault</button>
+    <pre id="vaultResult"></pre>
+  </div>
+  <div class="panel">
+    <h2>Token Checker</h2>
+    <input type="text" id="tokenCheck" placeholder="token...">
+    <button onclick="checkToken()">Cek</button>
+    <pre id="tokenResult"></pre>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
