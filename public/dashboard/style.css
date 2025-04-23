@@ -1,0 +1,31 @@
+body {
+  font-family: sans-serif;
+  background: #101820;
+  color: #fefefe;
+  padding: 2rem;
+}
+h1 { color: #00ffff; }
+.panel {
+  background: #1a1a2e;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+}
+input {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}
+button {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #00ffff;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+}
+pre {
+  background: #0f1923;
+  padding: 1rem;
+  border-radius: 8px;
+}
