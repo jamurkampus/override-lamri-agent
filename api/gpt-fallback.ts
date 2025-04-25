@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
   try {
     const hfRes = await fetch(
-      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1",
+      "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta",
       {
         method: "POST",
         headers: {
@@ -17,7 +17,6 @@ export default async function handler(req, res) {
 
     const result = await hfRes.json();
 
-    // Fleksibel parsing berbagai kemungkinan output
     const text =
       result?.[0]?.generated_text ||
       result?.generated_text ||
