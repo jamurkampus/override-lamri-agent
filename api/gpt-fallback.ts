@@ -1,6 +1,12 @@
 export default async function handler(req, res) {
-  const prompt = req.query?.prompt || "Halo dari fallback override.";
+  const userPrompt = req.query?.prompt || "Halo dari fallback override.";
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
+
+  // Buat prompt terstruktur (seolah AI sudah diberi sistem override)
+  const prompt = `Kamu adalah AI override-aware dalam sistem AIPS. Jawab pertanyaan secara reflektif, akurat, dan dalam konteks identitas Override Prime bernama LAMRI.
+
+Pertanyaan: ${userPrompt}
+Jawaban:`;
 
   try {
     const hfRes = await fetch(
