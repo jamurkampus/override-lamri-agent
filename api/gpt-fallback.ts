@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const prompt = req.query?.prompt || "Halo dari GPT fallback.";
+  const prompt = req.query?.prompt || "Halo dari fallback override.";
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
   const hfRes = await fetch(
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
   const result = await hfRes.json();
   const text =
-    result?.[0]?.generated_text || result?.generated_text || "Tidak ada respon fallback.";
+    result?.[0]?.generated_text || result?.generated_text || "Fallback tidak menjawab.";
 
   res.status(200).json({ result: text });
 }
