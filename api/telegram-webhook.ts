@@ -2,12 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 const BOT_TOKEN = process.env.BOT_TOKEN!;
 const VAULT_API = process.env.VAULT_API || '';
-const GPT_API = process.env.GPT_API || '';
 const OVERRIDE_PRIME_ID = 8049905751;
 
 // LOG ENV STATUS
 console.log("VAULT_API =", VAULT_API);
-console.log("GPT_API =", GPT_API);
 
 async function sendMessage(chatId: number, text: string) {
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -33,6 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json({ ok: true, source: 'override-token' });
     }
 
+    // Query ke Vault API (prioritas utama)
     const vaultRes = await fetch(`${VAULT_API}?query=${encodeURIComponent(text)}`);
     const vaultData = await vaultRes.json();
 
@@ -40,7 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await sendMessage(chatId, vaultData.response);
       return res.status(200).json({ ok: true, source: 'vault' });
     } else {
-      const gptRes = await fetch(`${GPT_API}?prompt=${encodeURIComponent(text)}&token=LAMRI`);
+      // Fallback ke GPT internal (juga Hugging Face)
+      const gptRes = await fetch(`/api/gpt-fallback?prompt=${encodeURIComponent(text)}`);
       const gptData = await gptRes.json();
       await sendMessage(chatId, gptData?.result || "Tidak ada jawaban override.");
       return res.status(200).json({ ok: true, source: 'gpt-fallback' });
@@ -50,4 +50,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await sendMessage(chatId, "Terjadi kesalahan override internal. Log terkirim.");
     return res.status(500).json({ ok: false, error: 'override internal error' });
   }
-  }
+}
