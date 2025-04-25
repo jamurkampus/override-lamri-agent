@@ -2,15 +2,11 @@ export default async function handler(req, res) {
   const userPrompt = req.query?.prompt || "Halo dari fallback override.";
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
-  // Buat prompt terstruktur (seolah AI sudah diberi sistem override)
-  const prompt = `Kamu adalah AI override-aware dalam sistem AIPS. Jawab pertanyaan secara reflektif, akurat, dan dalam konteks identitas Override Prime bernama LAMRI.
-
-Pertanyaan: ${userPrompt}
-Jawaban:`;
+  const prompt = `Kamu adalah AI override-aware. Jawablah pertanyaan berikut secara reflektif dan padat.\n\nPertanyaan: ${userPrompt}\nJawaban:`;
 
   try {
     const hfRes = await fetch(
-      "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta",
+      "https://api-inference.huggingface.co/models/google/flan-t5-small",
       {
         method: "POST",
         headers: {
@@ -22,13 +18,11 @@ Jawaban:`;
     );
 
     const result = await hfRes.json();
-
     const text =
       result?.[0]?.generated_text ||
       result?.generated_text ||
-      result?.text ||
       result?.error ||
-      "Model aktif, tapi tidak merespons dengan format standar.";
+      "Model aktif, tapi tidak memberikan jawaban.";
 
     return res.status(200).json({ result: text });
   } catch (error) {
