@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
   try {
     const hfRes = await fetch(
-      "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta",
+      "https://api-inference.huggingface.co/models/microsoft/phi-2",
       {
         method: "POST",
         headers: {
