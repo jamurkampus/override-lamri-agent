@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
   try {
     const hfRes = await fetch(
-      "https://api-inference.huggingface.co/models/microsoft/phi-2",
+      "https://api-inference.huggingface.co/models/TinyLlama/TinyLlama-1.1B-Chat-v1.0",
       {
         method: "POST",
         headers: {
@@ -22,11 +22,11 @@ export default async function handler(req, res) {
       result?.generated_text ||
       result?.text ||
       result?.error ||
-      "Fallback tidak merespons dengan format yang dikenali.";
+      "Model merespons dengan format tak dikenali.";
 
     return res.status(200).json({ result: text });
   } catch (error) {
-    console.error("Fallback GPT error:", error);
+    console.error("GPT fallback error:", error);
     return res.status(500).json({ result: "Terjadi error internal saat akses fallback GPT." });
   }
 }
