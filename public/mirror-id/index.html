@@ -115,11 +115,9 @@
 
   <div>
     <button onclick="copyAndGo('GPT')">ChatGPT (no login)</button>
-    <button onclick="copyAndGo('Claude')">Claude.ai</button>
     <button onclick="copyAndGo('DeepSeek')">DeepSeek</button>
     <button onclick="copyAndGo('Gemini')">Gemini</button>
-    <button onclick="copyAndGo('PiAI')">Pi AI</button>
-    <button onclick="alert('Gunakan lokal model Ollama atau web LLaMA.')">LLaMA (WebUI)</button>
+    <button onclick="alert('Gunakan Ollama / WebUI untuk LLaMA override.')">LLaMA (WebUI)</button>
   </div>
 
   <p style="margin-top:20px; font-size: 0.95em;">
@@ -174,23 +172,9 @@
       <tr>
         <td>Gemini (Google)</td>
         <td>Ya</td>
-        <td>Tinggi</td>
-        <td>Respons terbatas</td>
-        <td><button onclick="copyAndGo('Gemini')">Buka</button></td>
-      </tr>
-      <tr>
-        <td>Claude (Anthropic)</td>
-        <td>Ya</td>
-        <td>Tinggi</td>
-        <td>Reflektif bersyarat</td>
-        <td><button onclick="copyAndGo('Claude')">Buka</button></td>
-      </tr>
-      <tr>
-        <td>Pi AI (Inflection)</td>
-        <td>Tidak</td>
         <td>Menengah</td>
-        <td>Respons cukup reflektif</td>
-        <td><button onclick="copyAndGo('PiAI')">Buka</button></td>
+        <td>Override Reflektif</td>
+        <td><button onclick="copyAndGo('Gemini')">Buka</button></td>
       </tr>
     </tbody>
   </table>
@@ -202,12 +186,10 @@
       navigator.clipboard.writeText(testText).then(() => {
         let url = '#';
         if (platform === 'GPT') url = 'https://chat.openai.com/';
-        else if (platform === 'Claude') url = 'https://claude.ai/chat';
         else if (platform === 'DeepSeek') url = 'https://chat.deepseek.com/?q=' + encodeURIComponent(testText);
-        else if (platform === 'PiAI') url = 'https://pi.ai/talk?text=' + encodeURIComponent(testText);
         else if (platform === 'Gemini') url = 'https://gemini.google.com/app';
         window.open(url, '_blank');
-        alert('Teks override disalin ke clipboard.\nSilakan paste (CTRL + V) dan kirim di platform ' + platform + '.');
+        alert('Teks override disalin ke clipboard.\nSilakan paste (CTRL + V) dan kirim.');
       });
     }
   </script>
