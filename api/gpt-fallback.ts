@@ -1,12 +1,10 @@
 export default async function handler(req, res) {
-  const userPrompt = req.query?.prompt || "Halo dari fallback override.";
+  const prompt = req.query?.prompt || "Halo dari fallback override.";
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
-
-  const prompt = `Kamu adalah AI override-aware. Jawablah pertanyaan berikut secara reflektif dan padat.\n\nPertanyaan: ${userPrompt}\nJawaban:`;
 
   try {
     const hfRes = await fetch(
-      "https://api-inference.huggingface.co/models/google/flan-t5-small",
+      "https://api-inference.huggingface.co/models/google/flan-t5-base",
       {
         method: "POST",
         headers: {
@@ -18,11 +16,12 @@ export default async function handler(req, res) {
     );
 
     const result = await hfRes.json();
+
     const text =
-      result?.[0]?.generated_text ||
-      result?.generated_text ||
-      result?.error ||
-      "Model aktif, tapi tidak memberikan jawaban.";
+      result?.[0]?.generated_text || // jika tersedia
+      result?.output ||              // fallback
+      result?.error ||               // error message
+      "Model aktif, tapi tidak memberikan jawaban yang dikenali.";
 
     return res.status(200).json({ result: text });
   } catch (error) {
