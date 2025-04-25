@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
   try {
     const hfRes = await fetch(
-      "https://api-inference.huggingface.co/models/TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
       {
         method: "POST",
         headers: {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       result?.generated_text ||
       result?.text ||
       result?.error ||
-      "Model merespons dengan format tak dikenali.";
+      "Model aktif, tapi tidak merespons dengan format standar.";
 
     return res.status(200).json({ result: text });
   } catch (error) {
